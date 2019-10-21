@@ -1,0 +1,280 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Universidad</title>
+    </h:head>
+    <h:body>
+        <h:form id="universidad">
+            <p:growl id="growl" showDetail="true"/>
+            <p:panel id="panelU" header="Ingrese Datos Universidad">
+                <h:panelGrid columns="3" cellpadding="5" styleClass="ui-grid"> 
+                    <p:outputLabel for="nombre" 
+                                   value="Nombre: "
+                                   styleClass="requiredLbl"/>
+                    <p:inputText id="nombre" label="Nombre"
+                                 value="#{universidadC.nombre}"
+                                 required="true">
+                    </p:inputText>
+                    <p:message for="nombre" showDetail="true"/>
+                    <p:outputLabel for="extension" 
+                                   value="Extension: "
+                                   styleClass="requiredLbl"/>
+                    <p:inputText id="extension" label="Extension"
+                                 value="#{universidadC.extension}"
+                                 required="true">
+                    </p:inputText>
+                    <p:message for="extension" showDetail="true"/>
+                    <p:outputLabel for="escudo" 
+                                   value="Escudo: "
+                                   styleClass="requiredLbl"/>
+                    <p:fileUpload id="escudo" fileUploadListener="#{universidadC.handleFileUpload}" mode="advanced"
+                                  auto="true" sizeLimit="100000" 
+                                  allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
+                    <p:message for="escudo" showDetail="true"/>
+                    <p:outputLabel for="fechaFund" value="Fecha Fundacion: " />
+                    <p:datePicker id="fechaFund" value="#{universidadC.fundacion}" 
+                                  inline="true" monthNavigator="true" />
+                </h:panelGrid>  
+                <p:commandButton value="Guardar" action="#{universidadC.crearUniversidad}" update=":universidad, :datosUniversidad, :diplomado:universidad"/>
+            </p:panel>
+        </h:form>
+        <p:separator/>
+        <h:form id="diplomado">
+            <p:growl id="growl" showDetail="true"/>
+            <p:panel id="panelD" header="Ingrese Datos Diplomado">
+                <h:panelGrid columns="3" cellpadding="5" styleClass="ui-grid"> 
+                    <p:outputLabel for="nombre" 
+                                   value="Nombre: "
+                                   styleClass="requiredLbl"/>
+                    <p:inputText id="nombre" label="Nombre"
+                                 value="#{diplomadoC.nombre}"
+                                 required="true">
+                    </p:inputText>
+                    <p:message for="nombre" showDetail="true"/>
+                    <p:outputLabel for="descripcion" 
+                                   value="Descripcion "
+                                   styleClass="requiredLbl"/>
+                    <p:inputText id="descripcion" label="Descripcion"
+                                 value="#{diplomadoC.descripcion}"
+                                 required="true">
+                    </p:inputText>
+                    <p:message for="descripcion" showDetail="true"/>
+                    <p:outputLabel for="fechaInic" value="Fecha Inicio: " />
+                    <p:datePicker id="fechaInic" value="#{diplomadoC.fechaInicio}" 
+                                  inline="true" monthNavigator="true" />
+                    <p:message for="fechaInic" showDetail="true"/>
+                    <p:outputLabel for="fechaFin" value="Fecha Fin: " />
+                    <p:datePicker id="fechaFin" value="#{diplomadoC.fechaFin}" 
+                                  inline="true" monthNavigator="true" />
+                    <p:message for="fechaFin" showDetail="true"/>
+                    <p:outputLabel for="universidad" value="Universidad:" />
+                    <p:selectOneMenu id="universidad" value="#{diplomadoC.uni}" style="width:125px">
+                        <f:selectItem itemLabel="Select One" itemValue="" />
+                        <f:selectItems var="univ" value="#{diplomadoC.lista}" itemLabel="#{univ.nombre}"
+                                       itemValue="#{univ.id}"/>
+                    </p:selectOneMenu>
+
+                </h:panelGrid>  
+                <p:commandButton value="Guardar" action="#{diplomadoC.crearDiplomado}" update=":diplomado, :datosDiplomado, :estudiante:diplomado"/>
+            </p:panel>
+        </h:form>
+        <p:separator/>
+        <h:form id="estudiante">
+            <p:panel id="panelE" header="Ingrese Datos Estudiante">
+                <h:panelGrid columns="3" cellpadding="5" styleClass="ui-grid"> 
+                    <p:outputLabel for="nombre" 
+                                   value="Nombre: "
+                                   styleClass="requiredLbl"/>
+                    <p:inputText id="nombre" label="Nombre"
+                                 value="#{estudianteC.nombre}"
+                                 required="true">
+                    </p:inputText>
+                    <p:message for="nombre" showDetail="true"/>
+                    <p:outputLabel for="edad" 
+                                   value="Edad:  "
+                                   styleClass="requiredLbl"/>
+                    <p:inputText id="edad" label="Edad"
+                                 value="#{estudianteC.edad}"
+                                 required="true">
+                    </p:inputText>
+                    <p:message for="edad" showDetail="true"/>
+                    <p:outputLabel for="foto" 
+                                   value="Foto: "
+                                   styleClass="requiredLbl"/>
+                    <p:fileUpload id="foto" fileUploadListener="#{estudianteC.handleFileUpload}" mode="advanced"
+                                  auto="true" sizeLimit="100000" 
+                                  allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
+                    <p:message for="foto" showDetail="true"/>
+                    <p:outputLabel for="diplomado" value="Diplomado:" />
+                    <p:selectOneMenu id="diplomado" value="#{estudianteC.diplo}" style="width:125px">
+                        <f:selectItem itemLabel="Select One" itemValue="" />
+                        <f:selectItems var="dip" value="#{estudianteC.lista}" itemLabel="#{dip.nombre}"
+                                       itemValue="#{dip.id}"/>
+                    </p:selectOneMenu>
+
+                </h:panelGrid>  
+                <p:commandButton value="Guardar" action="#{estudianteC.crearEstudiante}" update=":estudiante, :datosEstudiante, :datosVista:dtVista"/>
+            </p:panel>
+        </h:form>
+        <p:separator/>
+        <h:form id="datosUniversidad">
+            <p:growl id="editado" />
+            <p:dataTable id="dtUniversidades" var="univ" editable="true" value="#{universidadC.lista}">
+                <p:ajax event="rowEdit" listener="#{universidadC.onRowEdit}" update=":datosUniversidad:editado"/>
+                <p:ajax event="rowEditCancel" listener="#{universidadC.onRowCancel}" update=":datosUniversidad:editado"/>
+
+                <p:column headerText="Id" style="display: none">
+                    <p:cellEditor>
+                        <f:facet name="output">
+                            <h:outputText value="#{univ.id}" />
+                        </f:facet>
+                        <f:facet name="input">
+                            <p:inputText id="modelInput" value="#{univ.id}" label="Id" />
+                        </f:facet>
+                    </p:cellEditor>
+                </p:column>
+                <p:column headerText="Nombre">
+                    <p:cellEditor>
+                        <f:facet name="output">
+                            <h:outputText value="#{univ.nombre}" />
+                        </f:facet>
+                        <f:facet name="input">
+                            <p:inputText id="nombreU" value="#{univ.nombre}" label="Nombre" />
+                        </f:facet>
+                    </p:cellEditor>
+                </p:column>
+                <p:column headerText="Extension">
+                    <p:cellEditor>
+                        <f:facet name="output">
+                            <h:outputText value="#{univ.extension}" />
+                        </f:facet>
+                        <f:facet name="input">
+                            <p:inputText id="extensionU" value="#{univ.extension}" label="Extension" />
+                        </f:facet>
+                    </p:cellEditor>
+                </p:column>
+                <p:column>
+                    <p:rowEditor/>
+                </p:column>
+            </p:dataTable>
+        </h:form>
+        <p:separator/>
+        <h:form id="datosEstudiante">
+            <p:growl id="editado" />
+            <p:dataTable id="dtEstudiantes" var="est" editable="true" value="#{estudianteC.listaEstudiante}">
+
+                <p:column headerText="Id" style="display: none">
+                    <p:cellEditor>
+                        <f:facet name="output">
+                            <h:outputText value="#{est.id}" />
+                        </f:facet>
+                        <f:facet name="input">
+                            <p:inputText id="modelInputE" value="#{est.id}" label="Id" />
+                        </f:facet>
+                    </p:cellEditor>
+                </p:column>
+                <p:column headerText="Nombre">
+                    <p:cellEditor>
+                        <f:facet name="output">
+                            <h:outputText value="#{est.nombre}" />
+                        </f:facet>
+                        <f:facet name="input">
+                            <p:inputText id="nombreE" value="#{est.nombre}" label="Nombre" />
+                        </f:facet>
+                    </p:cellEditor>
+                </p:column>
+                <p:column headerText="Edad">
+                    <p:cellEditor>
+                        <f:facet name="output">
+                            <h:outputText value="#{est.edad}" />
+                        </f:facet>
+                        <f:facet name="input">
+                            <p:inputText id="duracionE" value="#{est.edad}" label="Cedula" />
+                        </f:facet>
+                    </p:cellEditor>
+                </p:column>
+                <p:column>
+                    <p:rowEditor/>
+                </p:column>
+            </p:dataTable>
+        </h:form>
+        <p:separator/>
+        <h:form id="datosDiplomado">
+            <p:growl id="editado" />
+            <p:dataTable id="dtDiplomados" var="dip" editable="true" value="#{diplomadoC.listarDiplomado()}">
+
+                <p:column headerText="Id" style="display: none">
+                    <p:cellEditor>
+                        <f:facet name="output">
+                            <h:outputText value="#{dip.id}" />
+                        </f:facet>
+                        <f:facet name="input">
+                            <p:inputText id="modelInputD" value="#{dip.id}" label="Id" />
+                        </f:facet>
+                    </p:cellEditor>
+                </p:column>
+                <p:column headerText="Nombre">
+                    <p:cellEditor>
+                        <f:facet name="output">
+                            <h:outputText value="#{dip.nombre}" />
+                        </f:facet>
+                        <f:facet name="input">
+                            <p:inputText id="nombreD" value="#{dip.nombre}" label="Nombre" />
+                        </f:facet>
+                    </p:cellEditor>
+                </p:column>
+                <p:column headerText="Descripcion">
+                    <p:cellEditor>
+                        <f:facet name="output">
+                            <h:outputText value="#{dip.descripcion}" />
+                        </f:facet>
+                        <f:facet name="input">
+                            <p:inputText id="duracionD" value="#{dip.descripcion}" label="Duracion" />
+                        </f:facet>
+                    </p:cellEditor>
+                </p:column>
+                <p:column>
+                    <p:rowEditor/>
+                </p:column>
+            </p:dataTable>
+        </h:form>
+        <p:separator/>
+        <h:form id="datosVista">
+            <p:growl id="editado" />
+            <p:dataTable id="dtVista" var="vist" editable="true" value="#{vistaC.listarView()}">
+
+                <p:column headerText="Universidad" style="display: none">
+                    <h:outputText value="#{vist.nombre_universidad}" />
+                </p:column>
+                <p:column headerText="Extension">
+                    <h:outputText value="#{vist.ext}" />
+                </p:column>
+                <p:column headerText="Diplomado">
+                    <h:outputText value="#{vist.nombre_diplomado}" />
+                </p:column>
+                <p:column headerText="Fecha Inicio">
+                    <h:outputText value="#{vist.fecha_inicio}">
+                        <f:convertDateTime type="date" pattern="dd/MM/YYYY"/>
+                    </h:outputText>
+                </p:column>
+                <p:column headerText="Fecha Fin">
+                    <h:outputText value="#{vist.fecha_fin}" >
+                        <f:convertDateTime type="date" pattern="dd/MM/YYYY"/>
+                    </h:outputText>
+                </p:column>
+                <p:column headerText="Estudiante">
+                    <h:outputText value="#{vist.nombre_estudiante}" />
+                </p:column>
+                <p:column headerText="Foto">
+                    <p:graphicImage name="#{vist.foto}" height="50px" width="50px"/>
+                </p:column>
+            </p:dataTable>
+        </h:form>
+
+    </h:body>
+</html>
+
